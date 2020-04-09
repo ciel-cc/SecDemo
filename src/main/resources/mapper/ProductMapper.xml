@@ -5,8 +5,10 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="amount" jdbcType="INTEGER" property="amount" />
-    <result column="price" jdbcType="DOUBLE" property="price" />
-    <result column="deposit" jdbcType="DOUBLE" property="price" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="deposit" jdbcType="DECIMAL" property="price" />
+    <result column="rent_price" jdbcType="DECIMAL" property="rentPrice" />
+    <result column="freight" jdbcType="DECIMAL" property="freight" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
     <result column="cate_id" jdbcType="INTEGER" property="cateId" />
     <result column="provider_user_id" jdbcType="INTEGER" property="providerUserId" />
@@ -30,14 +32,15 @@
   </delete>
   <insert id="insert" parameterType="com.secshow.demo.model.Product">
     insert into product (id, name, amount, 
-      price, deposit, detail, cate_id,
+      price, deposit, rent_price, freight, detail, cate_id,
       provider_user_id, buyer_user_id, statu, 
       rent_or_sail, release_time, create_time, 
       create_by, update_time, update_by, 
       img, owner_name,
       owner_phone, owner_address)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, 
-      #{price,jdbcType=DOUBLE}, #{deposit,jdbcType=DOUBLE}, #{detail,jdbcType=VARCHAR}, #{cateId,jdbcType=INTEGER},
+      #{price,jdbcType=DECIMAL}, #{deposit,jdbcType=DECIMAL}, #{rentPrice,jdbcType=DECIMAL},
+       #{freight,jdbcType=DECIMAL},#{detail,jdbcType=VARCHAR}, #{cateId,jdbcType=INTEGER},
       #{providerUserId,jdbcType=INTEGER}, #{buyerUserId,jdbcType=INTEGER}, #{statu,jdbcType=VARCHAR}, 
       #{rentOrSail,jdbcType=TINYINT}, #{releaseTime,jdbcType=TIMESTAMP}, CURRENT_TIMESTAMP ,
       #{createBy,jdbcType=INTEGER}, CURRENT_TIMESTAMP , #{updateBy,jdbcType=INTEGER},
@@ -48,8 +51,10 @@
     update product
     set name = #{name,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=INTEGER},
-      price = #{price,jdbcType=DOUBLE},
-      deposit = #{deposit,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DECIMAL},
+      deposit = #{deposit,jdbcType=DECIMAL},
+      rent_price = #{rentPrice,jdbcType=DECIMAL},
+      freight = #{freight,jdbcType=DECIMAL},
       detail = #{detail,jdbcType=VARCHAR},
       cate_id = #{cateId,jdbcType=INTEGER},
       provider_user_id = #{providerUserId,jdbcType=INTEGER},
@@ -66,35 +71,35 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
+    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by, 
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByCateId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
+    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
     where cate_id = #{cateId,jdbcType=INTEGER}
   </select>
   <select id="selectByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
+    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
     where rent_or_sail = #{type,jdbcType=INTEGER} or rent_or_sail = 2
   </select>
   <select id="selectLikeName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
+    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
     where name like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
+    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by, 
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
@@ -108,14 +113,14 @@
     ORDER BY statu
   </select>
   <select id="selectByProviderTypeHadOut" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
+    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
     where provider_user_id = #{userId,jdbcType=INTEGER} and statu = #{type,jdbcType=INTEGER}
   </select>
   <select id="selectByBuyerTypeIn" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
+    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
     from product

@@ -2,6 +2,7 @@ package com.secshow.demo.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -12,9 +13,16 @@ public class Product {
 
     private Integer amount;
 
-    private Double price;
+    private BigDecimal price;
 
-    private Double deposit;
+    //押金
+    private BigDecimal deposit;
+
+    //租金单价
+    private BigDecimal rentPrice;
+
+    //运费
+    private BigDecimal freight;
 
     private String detail;
 
