@@ -19,6 +19,12 @@ public class Rent {
 
     private BigDecimal deposit;
 
+    private Integer rentDays;
+
+    private BigDecimal rentTotalPrice;
+
+    private BigDecimal freight;
+
     private Date rentStartTime;
 
     private Date rentEndTime;
