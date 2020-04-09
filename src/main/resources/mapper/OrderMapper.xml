@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secshow.demo.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.secshow.demo.model.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="totalprice" jdbcType="DECIMAL" property="totalprice" />
+    <result column="statu" jdbcType="VARCHAR" property="statu" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="postmethod" jdbcType="VARCHAR" property="postmethod" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="pro_id" jdbcType="INTEGER" property="proId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.secshow.demo.model.Order">
+    insert into order (id, totalprice, statu, 
+      name, address, phone, 
+      postmethod, order_time, user_id, 
+      pro_id, create_time, create_by, 
+      update_time, update_by, is_deleted
+      )
+    values (#{id,jdbcType=INTEGER}, #{totalprice,jdbcType=DECIMAL}, #{statu,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{postmethod,jdbcType=VARCHAR}, #{orderTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, 
+      #{proId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDeleted,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.secshow.demo.model.Order">
+    update order
+    set totalprice = #{totalprice,jdbcType=DECIMAL},
+      statu = #{statu,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      postmethod = #{postmethod,jdbcType=VARCHAR},
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER},
+      pro_id = #{proId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, totalprice, statu, name, address, phone, postmethod, order_time, user_id, 
+    pro_id, create_time, create_by, update_time, update_by, is_deleted
+    from order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, totalprice, statu, name, address, phone, postmethod, order_time, user_id, 
+    pro_id, create_time, create_by, update_time, update_by, is_deleted
+    from order
+  </select>
+</mapper>
