@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secshow.demo.mapper.AddressMapper">
+  <resultMap id="BaseResultMap" type="com.secshow.demo.model.Address">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
+    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+    <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="country_id" jdbcType="INTEGER" property="countryId" />
+    <result column="country_name" jdbcType="VARCHAR" property="countryName" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from address
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.secshow.demo.model.Address">
+    insert into address (id, user_id, receiver_name, 
+      receiver_phone, province_id, province_name, 
+      city_id, city_name, country_id, 
+      country_name, detail, postal_code, 
+      create_time, create_by, update_time, 
+      update_by, is_deleted)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
+      #{receiverPhone,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR}, 
+      #{cityId,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR}, #{countryId,jdbcType=INTEGER}, 
+      #{countryName,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{isDeleted,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.secshow.demo.model.Address">
+    update address
+    set user_id = #{userId,jdbcType=INTEGER},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=INTEGER},
+      province_name = #{provinceName,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=INTEGER},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      country_id = #{countryId,jdbcType=INTEGER},
+      country_name = #{countryName,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      postal_code = #{postalCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, receiver_name, receiver_phone, province_id, province_name, city_id, 
+    city_name, country_id, country_name, detail, postal_code, create_time, create_by, 
+    update_time, update_by, is_deleted
+    from address
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, receiver_name, receiver_phone, province_id, province_name, city_id, 
+    city_name, country_id, country_name, detail, postal_code, create_time, create_by, 
+    update_time, update_by, is_deleted
+    from address
+  </select>
+</mapper>
