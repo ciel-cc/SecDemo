@@ -7,7 +7,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="update_by" jdbcType="TIMESTAMP" property="updateBy" />
-    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from category
@@ -15,10 +15,10 @@
   </delete>
   <insert id="insert" parameterType="com.secshow.demo.model.Category">
     insert into category (id, name, update_time, 
-      create_by, update_by, is_delete
+      create_by, update_by, is_deleted
       )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},CURRENT_TIME ,
+      #{createBy,jdbcType=VARCHAR}, current_time , #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.secshow.demo.model.Category">
@@ -27,16 +27,16 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=VARCHAR},
       update_by = #{updateBy,jdbcType=TIMESTAMP},
-      is_delete = #{isDelete,jdbcType=INTEGER}
+      is_deleted = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, update_time, create_by, update_by, is_delete
+    select id, name, update_time, create_by, update_by, is_deleted
     from category
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, name, update_time, create_by, update_by, is_delete
+    select id, name, update_time, create_by, update_by, is_deleted
     from category
   </select>
 </mapper>

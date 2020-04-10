@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secshow.demo.mapper.MyOrderMapper">
+  <resultMap id="BaseResultMap" type="com.secshow.demo.model.MyOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="unitprice" jdbcType="DECIMAL" property="unitprice" />
+    <result column="stuffprice" jdbcType="DECIMAL" property="stuffprice" />
+    <result column="freight" jdbcType="DECIMAL" property="freight" />
+    <result column="deposit" jdbcType="DECIMAL" property="freight" />
+    <result column="totalprice" jdbcType="DECIMAL" property="totalprice" />
+    <result column="statu" jdbcType="VARCHAR" property="statu" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="postmethod" jdbcType="VARCHAR" property="postmethod" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="buyer_user_id" jdbcType="INTEGER" property="buyerUserId" />
+    <result column="provider_user_id" jdbcType="INTEGER" property="providerUserId" />
+    <result column="pro_id" jdbcType="INTEGER" property="proId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="rent_start_time" jdbcType="TIMESTAMP" property="rentStartTime" />
+    <result column="rent_end_time" jdbcType="TIMESTAMP" property="rentEndTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from myorder
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.secshow.demo.model.MyOrder">
+    insert into myorder (unitprice, stuffprice,
+      freight, deposit, totalprice, statu,
+      type, name, address, 
+      phone, postmethod, order_time, 
+      buyer_user_id, provider_user_id, pro_id, 
+      create_time, create_by, update_time, 
+      update_by, rent_start_time,
+      rent_end_time)
+    values (#{unitprice,jdbcType=DECIMAL}, #{stuffprice,jdbcType=DECIMAL},
+      #{freight,jdbcType=DECIMAL}, #{deposit,jdbcType=DECIMAL}, #{totalprice,jdbcType=DECIMAL}, #{statu,jdbcType=VARCHAR},
+      #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{postmethod,jdbcType=VARCHAR}, #{orderTime,jdbcType=TIMESTAMP}, 
+      #{buyerUserId,jdbcType=INTEGER}, #{providerUserId,jdbcType=INTEGER}, #{proId,jdbcType=INTEGER}, 
+      CURRENT_TIME , #{createBy,jdbcType=INTEGER}, CURRENT_TIME,
+      #{updateBy,jdbcType=INTEGER}, #{rentStartTime,jdbcType=TIMESTAMP},
+      #{rentEndTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.secshow.demo.model.MyOrder">
+    update myorder
+    set unitprice = #{unitprice,jdbcType=DECIMAL},
+      stuffprice = #{stuffprice,jdbcType=DECIMAL},
+      freight = #{freight,jdbcType=DECIMAL},
+      deposit = #{deposit,jdbcType=DECIMAL},
+      totalprice = #{totalprice,jdbcType=DECIMAL},
+      statu = #{statu,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      postmethod = #{postmethod,jdbcType=VARCHAR},
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      buyer_user_id = #{buyerUserId,jdbcType=INTEGER},
+      provider_user_id = #{providerUserId,jdbcType=INTEGER},
+      pro_id = #{proId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_time = CURRENT_TIME,
+      update_by = #{updateBy,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      rent_start_time = #{rentStartTime,jdbcType=TIMESTAMP},
+      rent_end_time = #{rentEndTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, unitprice, stuffprice, freight, deposit, totalprice, statu, type, name, address,
+    phone, postmethod, order_time, buyer_user_id, provider_user_id, pro_id, create_time, 
+    create_by, update_time, update_by, is_deleted, rent_start_time, rent_end_time
+    from myorder
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, unitprice, stuffprice, freight, deposit, totalprice, statu, type, name, address,
+    phone, postmethod, order_time, buyer_user_id, provider_user_id, pro_id, create_time, 
+    create_by, update_time, update_by, is_deleted, rent_start_time, rent_end_time
+    from myorder
+  </select>
+</mapper>
