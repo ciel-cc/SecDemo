@@ -38,6 +38,8 @@ public interface ProductService {
     int insertBoth(Product product);
 
     /** 购入物品 */
-    int buyPro(Product product);
+    Product buyPro(int productId, int buyerUserId);
+
+    int rentPro(int productId, int buyerUserId);
 
 }

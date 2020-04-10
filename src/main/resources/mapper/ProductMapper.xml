@@ -64,6 +64,7 @@
       release_time = #{releaseTime,jdbcType=TIMESTAMP},
       update_time = CURRENT_TIMESTAMP,
       update_by = #{updateBy,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
       img = #{img,jdbcType=VARCHAR},
       owner_name = #{ownerName,jdbcType=VARCHAR},
       owner_phone = #{ownerPhone,jdbcType=VARCHAR},
@@ -82,27 +83,28 @@
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
-    where cate_id = #{cateId,jdbcType=INTEGER}
+    where cate_id = #{cateId,jdbcType=INTEGER} and is_deleted = 0
   </select>
   <select id="selectByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
-    where rent_or_sail = #{type,jdbcType=INTEGER} or rent_or_sail = 2
+    where (rent_or_sail = #{type,jdbcType=INTEGER} or rent_or_sail = 2) and is_deleted = 0
   </select>
   <select id="selectLikeName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
-    where name like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
+    where name like CONCAT('%', #{name,jdbcType=VARCHAR}, '%') and is_deleted = 0
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by, 
     is_deleted, img, owner_name, owner_phone, owner_address
     from product
+    where is_deleted = 0
   </select>
   <select id="selectByProviderTypeOut" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,

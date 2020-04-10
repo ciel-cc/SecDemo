@@ -110,11 +110,11 @@ public class ProController {
 
     /************************ 入物品 *****************************/
     /** 买入物品 */
-    public String buyStuff(Product product){
-        int res = productService.buyPro(product);
+    /*public String buyStuff(Product product, int userId){
+        int res = productService.buyPro(product.getBuyerUserId());
         if (res == 1)
             return "success";
         return "error";
-    }
+    }*/
     /** 租赁物品 */
 }

@@ -2,10 +2,12 @@ package com.secshow.demo.service.impl;
 
 
 import com.secshow.demo.mapper.ProductMapper;
+import com.secshow.demo.model.Order;
 import com.secshow.demo.model.Product;
 import com.secshow.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.rmi.runtime.Log;
 
 import java.util.List;
 
@@ -98,9 +100,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int buyPro(Product product) {
+    public Product buyPro(int productId, int buyerUserId) {
+        Product product = productMapper.selectByPrimaryKey(productId);
+        System.out.println(product);
         product.setStatu((byte)1);
+        product.setBuyerUserId(buyerUserId);
+        product.setIsDeleted(1);
         product.setUpdateBy(product.getBuyerUserId());
-        return productMapper.updateByPrimaryKey(product);
+        int prores = productMapper.updateByPrimaryKey(product);
+        return product;
+    }
+
+    @Override
+    public int rentPro(int productId, int buyerUserId) {
+        Product product = productMapper.selectByPrimaryKey(productId);
+        product.setBuyerUserId(buyerUserId);
+        product.setStatu((byte)3);
+        product.setIsDeleted(1);
+        product.setUpdateBy(product.getBuyerUserId());
+        int prores = productMapper.updateByPrimaryKey(product);
+        return prores;
     }
 }

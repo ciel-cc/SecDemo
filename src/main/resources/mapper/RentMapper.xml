@@ -28,14 +28,12 @@
       pro_id, price, deposit, 
       rent_days, rent_total_price, freight, 
       rent_start_time, rent_end_time, create_time, 
-      create_by, update_time, update_by, 
-      is_deleted)
+      create_by, update_time, update_by)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{renterId,jdbcType=INTEGER}, 
       #{proId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{deposit,jdbcType=DECIMAL}, 
       #{rentDays,jdbcType=INTEGER}, #{rentTotalPrice,jdbcType=DECIMAL}, #{freight,jdbcType=DECIMAL}, 
-      #{rentStartTime,jdbcType=TIMESTAMP}, #{rentEndTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{createBy,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
-      #{isDeleted,jdbcType=INTEGER})
+      #{rentStartTime,jdbcType=TIMESTAMP}, #{rentEndTime,jdbcType=TIMESTAMP},CURRENT_TIME,
+      #{createBy,jdbcType=INTEGER}, CURRENT_TIME , #{updateBy,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.secshow.demo.model.Rent">
     update rent
@@ -51,7 +49,7 @@
       rent_end_time = #{rentEndTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_time = CURRENT_TIME,
       update_by = #{updateBy,jdbcType=INTEGER},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

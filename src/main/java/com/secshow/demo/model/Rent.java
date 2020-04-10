@@ -17,6 +17,7 @@ public class Rent {
 
     private BigDecimal price;
 
+    //押金
     private BigDecimal deposit;
 
     private Integer rentDays;
