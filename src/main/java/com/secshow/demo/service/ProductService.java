@@ -31,9 +31,11 @@ public interface ProductService {
     List<Product> allPersonalHadRentOut(int userId);
 
     /**发布商品*/
-    int insertSellPro(Product product);
+    int insertSellPro(Product product, List<String> fileName);
 
     int insertRentPro(Product product);
+
+    int insertRentPro(Product product, List<String> fileName);
 
     int insertBoth(Product product);
 

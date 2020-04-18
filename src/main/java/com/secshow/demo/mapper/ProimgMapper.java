@@ -1,8 +1,11 @@
 package com.secshow.demo.mapper;
 
 import com.secshow.demo.model.Proimg;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface ProimgMapper {
     int deleteByPrimaryKey(Integer id);
 

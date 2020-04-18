@@ -16,14 +16,14 @@
     delete from proimg
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.secshow.demo.model.Proimg">
-    insert into proimg (id, img_url, user_id, 
+  <insert id="insert" parameterType="com.secshow.demo.model.Proimg" useGeneratedKeys="true" keyProperty="id">
+    insert into proimg (img_url, user_id,
       pro_id, create_time, create_by, 
-      update_time, update_by, is_deleted
+      update_time, update_by
       )
-    values (#{id,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{proId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDeleted,jdbcType=INTEGER}
+    values (#{imgUrl,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
+      #{proId,jdbcType=INTEGER}, CURRENT_TIME , #{userId,jdbcType=INTEGER},
+      CURRENT_TIME , #{userId,jdbcType=INTEGER}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.secshow.demo.model.Proimg">

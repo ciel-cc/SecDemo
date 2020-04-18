@@ -4,11 +4,16 @@ package com.secshow.demo.service.impl;
 import com.secshow.demo.mapper.ProductMapper;
 import com.secshow.demo.model.Order;
 import com.secshow.demo.model.Product;
+import com.secshow.demo.model.Proimg;
+import com.secshow.demo.service.ImageService;
 import com.secshow.demo.service.ProductService;
+import com.secshow.demo.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.rmi.runtime.Log;
 
+import javax.annotation.Resource;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -17,9 +22,15 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Resource
+    private ImageService imageService;
+
     @Override
     public List<Product> getAllPro() {
-        return productMapper.selectAll();
+        List<Product> list = productMapper.selectAll();
+        list.forEach(product -> product.getProimgs().forEach(
+                        proimg -> proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+        return list;
     }
 
     @Override
@@ -47,42 +58,100 @@ public class ProductServiceImpl implements ProductService {
     /** 物品类型rentOrSail:  1转卖， 2租赁， 3都可以 */
     @Override
     public List<Product> allPersonalBuyIn(int userId) {
-        return productMapper.selectByBuyerTypeIn(userId, 1);
+        List<Product> list = productMapper.selectByBuyerTypeIn(userId, 1);
+        list.forEach( product -> { product.getProimgs().forEach(proimg ->
+                proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl()));});
+        return list;
     }
 
     @Override
     public List<Product> allPersonalRentIn(int userId) {
-        return productMapper.selectByBuyerTypeIn(userId, 3);
+        List<Product> list = productMapper.selectByBuyerTypeIn(userId, 3);
+        list.forEach( product -> { product.getProimgs().forEach(proimg ->
+                proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl()));});
+        return list;
     }
 
     @Override
     public List<Product> allPersonalNotSellOut(int userId) {
-        return productMapper.selectByProviderTypeOut(userId, 0);
+        List<Product> list =   productMapper.selectByProviderTypeOut(userId, 0);
+        list.forEach( product -> { product.getProimgs().forEach(proimg ->
+                proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl()));});
+        return list;
     }
 
     @Override
     public List<Product> allPersonalNotRentOut(int userId) {
-        return productMapper.selectByProviderTypeOut(userId, 2);
+        List<Product> list = productMapper.selectByProviderTypeOut(userId, 2);
+        list.forEach( product ->  product.getProimgs().forEach(proimg ->
+                proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+        return list;
     }
 
     @Override
     public List<Product> allPersonalHadSellOut(int userId) {
-        return productMapper.selectByProviderTypeHadOut(userId, 1);
+        List<Product> list =  productMapper.selectByProviderTypeHadOut(userId, 1);
+        list.forEach( product ->  product.getProimgs().forEach(proimg ->
+                proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+        return list;
     }
 
     @Override
     public List<Product> allPersonalHadRentOut(int userId) {
-        return productMapper.selectByProviderTypeHadOut(userId, 3);
+        List<Product> list = productMapper.selectByProviderTypeHadOut(userId, 3);
+        list.forEach( product ->  product.getProimgs().forEach(proimg ->
+                proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+        return list;
     }
 
 
     /********* 发布商品 ************/
     /********* 0未转卖，1已转卖，2为租赁，3已租赁, 4未租赁或转卖 ********/
     @Override
-    public int insertSellPro(Product product) {
+    public int insertSellPro(Product product, List<String> files) {
+        System.out.println("调用添加商品");
         product.setRentOrSail((byte)0);
         product.setStatu((byte)0);
-        return productMapper.insert(product);
+        int proRes = productMapper.insert(product);
+        System.out.println("prores="+proRes);
+        System.out.println(product);
+        System.out.println("product id is " + product.getId());
+        if (proRes != 1 || files.size() == 0)
+            return proRes;
+        List<Proimg> proimgList = new LinkedList<>();
+        for (String fileName : files){
+            Proimg proimg = buildProduct2Proimg(product, fileName);
+            proimgList.add(proimg);
+        }
+        return imageService.insertImage(proimgList);
+    }
+
+    @Override
+    public int insertRentPro(Product product, List<String> fileName) {
+        product.setRentOrSail((byte)1);
+        product.setStatu((byte)2);
+        int proRes = productMapper.insert(product);
+        System.out.println(product.getId());
+        if (proRes != 1) {
+            System.out.println("insert pro res != 1, proRes == " + proRes);
+            return proRes;
+        }
+        List<Proimg> proimgList = new LinkedList<>();
+        for (String name : fileName){
+            Proimg proimg = buildProduct2Proimg(product, name);
+            proimgList.add(proimg);
+        }
+        return imageService.insertImage(proimgList);
+    }
+
+    private Proimg buildProduct2Proimg(Product product, String fileName){
+        Proimg proimg = new Proimg();
+        proimg.setImgUrl(fileName);
+        proimg.setUserId(product.getProviderUserId());
+        proimg.setProId(product.getId());
+        proimg.setCreateBy(product.getProviderUserId());
+        proimg.setUpdateBy(product.getProviderUserId());
+        return proimg;
     }
 
     @Override
@@ -90,6 +159,7 @@ public class ProductServiceImpl implements ProductService {
         product.setRentOrSail((byte)1);
         product.setStatu((byte)2);
         return productMapper.insert(product);
+
     }
 
     @Override

@@ -25,25 +25,31 @@
     <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
     <result column="owner_phone" jdbcType="VARCHAR" property="ownerPhone" />
     <result column="owner_address" jdbcType="VARCHAR" property="ownerAddress" />
+    <collection property="proimgs" ofType="com.secshow.demo.model.Proimg" column="pro_id">
+      <id column="pid" jdbcType="INTEGER" property="id" />
+      <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+      <result column="user_id" jdbcType="INTEGER" property="userId" />
+      <result column="pro_id" jdbcType="INTEGER" property="proId" />
+    </collection>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.secshow.demo.model.Product">
-    insert into product (id, name, amount, 
+  <insert id="insert" parameterType="com.secshow.demo.model.Product" keyProperty="id">
+    insert into product ( name, amount,
       price, deposit, rent_price, freight, detail, cate_id,
       provider_user_id, buyer_user_id, statu, 
       rent_or_sail, release_time, create_time, 
       create_by, update_time, update_by, 
       img, owner_name,
       owner_phone, owner_address)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, 
+    values (#{name,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER},
       #{price,jdbcType=DECIMAL}, #{deposit,jdbcType=DECIMAL}, #{rentPrice,jdbcType=DECIMAL},
        #{freight,jdbcType=DECIMAL},#{detail,jdbcType=VARCHAR}, #{cateId,jdbcType=INTEGER},
       #{providerUserId,jdbcType=INTEGER}, #{buyerUserId,jdbcType=INTEGER}, #{statu,jdbcType=VARCHAR}, 
       #{rentOrSail,jdbcType=TINYINT}, #{releaseTime,jdbcType=TIMESTAMP}, CURRENT_TIMESTAMP ,
-      #{createBy,jdbcType=INTEGER}, CURRENT_TIMESTAMP , #{updateBy,jdbcType=INTEGER},
+      #{providerUserId,jdbcType=INTEGER}, CURRENT_TIMESTAMP , #{providerUserId,jdbcType=INTEGER},
       #{img,jdbcType=VARCHAR}, #{ownerName,jdbcType=VARCHAR},
       #{ownerPhone,jdbcType=VARCHAR}, #{ownerAddress,jdbcType=VARCHAR})
   </insert>
@@ -72,60 +78,72 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by, 
-    is_deleted, img, owner_name, owner_phone, owner_address
-    from product
+    is_deleted, img, owner_name, owner_phone, owner_address, pi.id, pi.img_url, pi.user_id, pi.pro_id
+    from product p join proimg pi on p.id = pi.pro_id
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByCateId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
-    statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
-    is_deleted, img, owner_name, owner_phone, owner_address
-    from product
-    where cate_id = #{cateId,jdbcType=INTEGER} and is_deleted = 0
+    select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
+    p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from product p left join proimg pi on p.id = pi.pro_id
+    where cate_id = #{cateId,jdbcType=INTEGER} and p.is_deleted = 0
   </select>
   <select id="selectByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
-    statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
-    is_deleted, img, owner_name, owner_phone, owner_address
-    from product
-    where (rent_or_sail = #{type,jdbcType=INTEGER} or rent_or_sail = 2) and is_deleted = 0
+    select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
+    p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from product p left join proimg pi on p.id = pi.pro_id
+    where (rent_or_sail = #{type,jdbcType=INTEGER} or rent_or_sail = 2) and p.is_deleted = 0
   </select>
   <select id="selectLikeName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
-    statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
-    is_deleted, img, owner_name, owner_phone, owner_address
-    from product
-    where name like CONCAT('%', #{name,jdbcType=VARCHAR}, '%') and is_deleted = 0
+    select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
+    p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from product p left join proimg pi on p.id = pi.pro_id
+    where name like CONCAT('%', #{name,jdbcType=VARCHAR}, '%') and p.is_deleted = 0
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
-    statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by, 
-    is_deleted, img, owner_name, owner_phone, owner_address
-    from product
-    where is_deleted = 0
+    select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
+    p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from product p left join proimg pi on p.id = pi.pro_id
+    where p.is_deleted = 0
   </select>
   <select id="selectByProviderTypeOut" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
+    /*select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
-    from product
+    from product*/
+    select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
+    p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from product p left join proimg pi on p.id = pi.pro_id
     where provider_user_id = #{userId,jdbcType=INTEGER} and (statu = #{type,jdbcType=INTEGER} or statu = 4)
     ORDER BY statu
   </select>
   <select id="selectByProviderTypeHadOut" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    /*select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
-    from product
+    from product*/
+    select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
+    p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from product p left join proimg pi on p.id = pi.pro_id
     where provider_user_id = #{userId,jdbcType=INTEGER} and statu = #{type,jdbcType=INTEGER}
   </select>
   <select id="selectByBuyerTypeIn" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    /*select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
     is_deleted, img, owner_name, owner_phone, owner_address
-    from product
+    from product*/
+    select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
+    p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from product p left join proimg pi on p.id = pi.pro_id
     where buyer_user_id = #{userId,jdbcType=INTEGER} and statu = #{type,jdbcType=INTEGER}
   </select>
 </mapper>

@@ -2,13 +2,18 @@ package com.secshow.demo.controller;
 
 import com.secshow.demo.model.Product;
 import com.secshow.demo.service.ProductService;
+import com.secshow.demo.util.FileNameUtil;
+import com.secshow.demo.util.FileUtil;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
 @RequestMapping("pro")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ProController {
 
     @Resource
@@ -41,6 +46,7 @@ public class ProController {
     /** 模糊查询 */
     @RequestMapping("likeName")
     public List<Product> likequery(@RequestParam String name){
+        System.out.println("like name" + name);
         return productService.getProLikeName(name);
     }
 
@@ -84,17 +90,40 @@ public class ProController {
 
     /************************ 发布物品 *****************************/
     @RequestMapping("addSell")
-    public String addSell(@RequestBody Product product){
-        int res = productService.insertSellPro(product);
-        if (res == 1)
+    public String addSell(@RequestParam("fileList") List<MultipartFile> list, Product product){
+        System.out.println(product);
+        List<String> fileNames = new LinkedList<>();
+        for (int i = 0; i < list.size(); i++) {
+            String uuidFileName = FileNameUtil.getFileName(list.get(i).getOriginalFilename());
+//            System.out.println("origin文件名：" + list.get(i).getOriginalFilename());
+            System.out.println("文件名：" +  list.get(i).getOriginalFilename());
+            boolean res = FileUtil.upload(list.get(i), "D:\\testImg\\", uuidFileName);
+            if (!res)
+                return "upload img error";
+            fileNames.add(uuidFileName);
+        }
+
+        int res = productService.insertSellPro(product, fileNames);
+        if (res >= 1){
             return "success";
-        return "error";
+        }
+        return "error insert product";
     }
 
     @RequestMapping("addRent")
-    public String addRent(@RequestBody Product product){
-        int res = productService.insertRentPro(product);
-        if (res == 1)
+    public String addRent(@RequestParam("fileList") List<MultipartFile> list, Product product){
+        System.out.println(product);
+        List<String> fileNames = new LinkedList<>();
+        for (int i = 0; i < list.size(); i++) {
+            String uuidFileName = FileNameUtil.getFileName(list.get(i).getOriginalFilename());
+            System.out.println("文件名：" +  list.get(i).getOriginalFilename());
+            boolean res = FileUtil.upload(list.get(i), "D:\\testImg\\", uuidFileName);
+            if (!res)
+                return "upload img error";
+            fileNames.add(uuidFileName);
+        }
+        int res = productService.insertRentPro(product, fileNames);
+        if (res >= 1)
             return "success";
         return "error";
     }

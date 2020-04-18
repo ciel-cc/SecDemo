@@ -9,6 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -36,5 +38,18 @@ class ProductServiceImplTest {
 
         for (Product product : list6)
             System.out.println(product);
+    }
+
+    @Test
+    void insert(){
+        Product product = new Product();
+        product.setProviderUserId(7);
+        product.setCreateBy(7);
+        product.setUpdateBy(7);
+        product.setName("price");
+        product.setDeposit(new BigDecimal(542));
+        String[] strings = new String[]{"tetsta", "testb"};
+        List<String> list = Arrays.asList(strings);
+        productService.insertSellPro(product, list);
     }
 }
