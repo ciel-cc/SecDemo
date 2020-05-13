@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class FileUtil {
 
-    public static final String  IMGURL = "http://192.168.0.103:8081/testImg/";
+    public static final String  IMGURL = "http://192.168.0.110:8081/testImg/";
 
     /**
      *

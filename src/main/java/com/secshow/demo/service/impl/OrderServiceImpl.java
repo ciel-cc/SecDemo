@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.security.Provider;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderServer {
@@ -29,6 +30,11 @@ public class OrderServiceImpl implements OrderServer {
     private ProductService productService;
 
     @Override
+    public List<MyOrder> getAllOrder() {
+        return orderMapper.selectAll();
+    }
+
+    @Override
     public int insertBuyOrder(MyOrder order) {
         Product product = productService.buyPro(order.getProId(), order.getBuyerUserId());
         order.setType(0);
@@ -39,12 +45,14 @@ public class OrderServiceImpl implements OrderServer {
     }
 
     @Override
-    public int insertRentOrder(RentVO rentVO) {
-        productService.rentPro(rentVO.getProId(), rentVO.getBuyerUserId());
-        rentMapper.insert(buildRentVO2Rent(rentVO));
-        MyOrder order = buildRentVO2Order(rentVO);
-        order.setType(1);
-        return orderMapper.insert(order);
+    public int insertRentOrder(Rent rent) {
+        productService.rentPro(rent.getProId(), rent.getBuyerUserId());
+        rent.setCreateBy(rent.getBuyerUserId());
+        rent.setUpdateBy(rent.getBuyerUserId());
+        return rentMapper.insert(rent);
+//        MyOrder order = buildRentVO2Order(rentVO);
+//        order.setType(1);
+//        return orderMapper.insert(order);
     }
 
     @Override
@@ -74,12 +82,12 @@ public class OrderServiceImpl implements OrderServer {
     private Rent buildRentVO2Rent(RentVO rentVO){
         Rent rent = new Rent();
         rent.setProId(rentVO.getProId());
-        rent.setUserId(rentVO.getProviderUserId());
+        /*rent.setUserId(rentVO.getProviderUserId());
         rent.setRenterId(rentVO.getProviderUserId());
         rent.setDeposit(rentVO.getDeposit());
         rent.setFreight(rentVO.getFreight());
         rent.setPrice(rentVO.getUnitprice());
-        rent.setRentTotalPrice(rentVO.getTotalprice());
+        rent.setRentTotalPrice(rentVO.getTotalprice());*/
         rent.setRentDays(rentVO.getRentDays());
         rent.setRentStartTime(rentVO.getRentStartTime());
         rent.setRentEndTime(rentVO.getRentEndTime());

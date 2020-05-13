@@ -1,5 +1,6 @@
 package com.secshow.demo.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.secshow.demo.model.Product;
 import com.secshow.demo.service.ProductService;
 import com.secshow.demo.util.FileNameUtil;
@@ -20,10 +21,22 @@ public class ProController {
     private ProductService productService;
 
     /**************************** 浏览物品 ***************************/
+    @RequestMapping("onePro/{proId}")
+    public Product proById(@PathVariable int proId){
+        return productService.getOneProById(proId);
+    }
+
     @RequestMapping("allPro")
     public List<Product> allPro(){
         return productService.getAllPro();
     }
+
+    @RequestMapping("proPage/{currPage}")
+    public PageInfo<Product> allProPage(@PathVariable Integer currPage){
+        return productService.getProPage(currPage);
+    }
+
+
 
     /** 根据类型 */
     @RequestMapping("proByCate/{cateId}")
@@ -139,11 +152,15 @@ public class ProController {
 
     /************************ 入物品 *****************************/
     /** 买入物品 */
-    /*public String buyStuff(Product product, int userId){
-        int res = productService.buyPro(product.getBuyerUserId());
+    /*@RequestMapping("buyStuff")
+    public String buyStuff(@RequestBody Product product, int userId){
+        System.out.println(product);
+        System.out.println(userId);
+        return "ok";
+        *//*int res = productService.buyPro(product.getBuyerUserId());
         if (res == 1)
             return "success";
-        return "error";
+        return "error";*//*
     }*/
     /** 租赁物品 */
 }

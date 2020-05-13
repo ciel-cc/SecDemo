@@ -6,7 +6,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="amount" jdbcType="INTEGER" property="amount" />
     <result column="price" jdbcType="DECIMAL" property="price" />
-    <result column="deposit" jdbcType="DECIMAL" property="price" />
+    <result column="deposit" jdbcType="DECIMAL" property="deposit" />
     <result column="rent_price" jdbcType="DECIMAL" property="rentPrice" />
     <result column="freight" jdbcType="DECIMAL" property="freight" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
@@ -79,10 +79,10 @@
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
-    statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by, 
-    is_deleted, img, owner_name, owner_phone, owner_address, pi.id, pi.img_url, pi.user_id, pi.pro_id
-    from product p join proimg pi on p.id = pi.pro_id
-    where id = #{id,jdbcType=INTEGER}
+    statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
+    p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id, pi.img_url, pi.user_id, pi.pro_id
+    from product p left join proimg pi on p.id = pi.pro_id
+    where p.id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByCateId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
@@ -115,13 +115,14 @@
   <select id="selectByProviderTypeOut" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     /*select id, name, amount, price, deposit, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
+
     is_deleted, img, owner_name, owner_phone, owner_address
     from product*/
     select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
     p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id pid, pi.img_url, pi.user_id, pi.pro_id
     from product p left join proimg pi on p.id = pi.pro_id
-    where provider_user_id = #{userId,jdbcType=INTEGER} and (statu = #{type,jdbcType=INTEGER} or statu = 4)
+    where provider_user_id = #{userId,jdbcType=INTEGER} and (statu = #{type,jdbcType=INTEGER} or statu = 4) and p.is_deleted = 0
     ORDER BY statu
   </select>
   <select id="selectByProviderTypeHadOut" parameterType="java.lang.Integer" resultMap="BaseResultMap">

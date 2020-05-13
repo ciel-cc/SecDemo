@@ -28,7 +28,9 @@ public class User {
 
     private String phoneNumber;
 
-    private String phone;
+    private String number;
 
     private Integer type;
+
+    private String location;
 }

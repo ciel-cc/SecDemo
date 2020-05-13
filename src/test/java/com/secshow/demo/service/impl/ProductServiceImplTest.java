@@ -1,5 +1,6 @@
 package com.secshow.demo.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.secshow.demo.model.Product;
 import com.secshow.demo.service.ProductService;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,17 @@ class ProductServiceImplTest {
     }
 
     @Test
+    void getAllProPage() {
+        PageInfo<Product> pageInfo = productService.getProPage(2);
+        List<Product> list = pageInfo.getList();
+        System.out.println(pageInfo);
+        for (Product pro:
+             list) {
+            System.out.println(pro);
+        }
+    }
+
+    @Test
     void allPersonalSellOut(){
 //        List<Product> list1 = productService.allPersonalNotSellOut(7);
 //        List<Product> list2 = productService.allPersonalNotRentOut(7);
@@ -51,5 +63,11 @@ class ProductServiceImplTest {
         String[] strings = new String[]{"tetsta", "testb"};
         List<String> list = Arrays.asList(strings);
         productService.insertSellPro(product, list);
+    }
+
+    @Test
+    void getOne(){
+        Product product = productService.getOneProById(1);
+        System.out.println(product);
     }
 }

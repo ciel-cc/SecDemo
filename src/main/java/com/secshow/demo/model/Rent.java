@@ -9,26 +9,25 @@ import java.util.Date;
 public class Rent {
     private Integer id;
 
-    private Integer userId;
-
-    private Integer renterId;
-
     private Integer proId;
 
-    private BigDecimal price;
+    private BigDecimal unitprice;
 
-    //押金
-    private BigDecimal deposit;
-
-    private Integer rentDays;
-
-    private BigDecimal rentTotalPrice;
+    private BigDecimal stuffprice;
 
     private BigDecimal freight;
+
+    private BigDecimal deposit;
+
+    private BigDecimal totalprice;
+
+    private Integer rentDays;
 
     private Date rentStartTime;
 
     private Date rentEndTime;
+
+    private Integer statu;
 
     private Date createTime;
 
@@ -39,4 +38,19 @@ public class Rent {
     private Integer updateBy;
 
     private Integer isDeleted;
+
+    private String name;
+
+    private String address;
+
+    private String phone;
+
+    private String postmethod;
+
+    private Date orderTime;
+
+    private Integer buyerUserId;
+
+    private Integer providerUserId;
+
 }

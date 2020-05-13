@@ -1,12 +1,17 @@
 package com.secshow.demo.service;
 
+import com.github.pagehelper.PageInfo;
 import com.secshow.demo.model.Product;
 
 import java.util.List;
 
 public interface ProductService {
     /** 浏览商品 */
+    Product getOneProById(int proId);
+
     List<Product> getAllPro();
+
+    PageInfo<Product> getProPage(Integer currPage);
 
     List<Product> getProByCate(int cateId);
 

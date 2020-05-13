@@ -2,6 +2,7 @@ package com.secshow.demo.mapper;
 
 import com.secshow.demo.model.Rent;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 

@@ -1,12 +1,15 @@
 package com.secshow.demo.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.secshow.demo.mapper.ProductMapper;
 import com.secshow.demo.model.Order;
 import com.secshow.demo.model.Product;
 import com.secshow.demo.model.Proimg;
 import com.secshow.demo.service.ImageService;
 import com.secshow.demo.service.ProductService;
+import com.secshow.demo.util.Define;
 import com.secshow.demo.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,21 +29,43 @@ public class ProductServiceImpl implements ProductService {
     private ImageService imageService;
 
     @Override
+    public Product getOneProById(int proId) {
+        return productMapper.selectByPrimaryKey(proId);
+    }
+
+    @Override
     public List<Product> getAllPro() {
         List<Product> list = productMapper.selectAll();
+    //从数据得到的文件名加上系统可访问图片路径
         list.forEach(product -> product.getProimgs().forEach(
-                        proimg -> proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+            proimg -> proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
         return list;
+}
+
+    @Override
+    public PageInfo<Product> getProPage(Integer currPage) {
+        if (currPage == 0 ) currPage = 1;
+        PageHelper.startPage(currPage, Define.PAGE_SIZE);
+        PageInfo<Product> pageInfo = new PageInfo<>(productMapper.selectAll());
+        pageInfo.getList().forEach(product -> product.getProimgs().forEach(
+                proimg -> proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+        return pageInfo;
     }
 
     @Override
     public List<Product> getProByCate(int cateId) {
-        return productMapper.selectByCateId(cateId);
+        List<Product> list = productMapper.selectByCateId(cateId);
+        list.forEach(product -> product.getProimgs().forEach(
+                proimg -> proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+        return list;
     }
 
     @Override
     public List<Product> getProLikeName(String name) {
-        return productMapper.selectLikeName(name);
+        List<Product> list = productMapper.selectLikeName(name);
+        list.forEach(product -> product.getProimgs().forEach(
+                proimg -> proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+        return list;
     }
 
     @Override

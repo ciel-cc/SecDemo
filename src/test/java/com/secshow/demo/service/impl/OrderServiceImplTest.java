@@ -59,8 +59,8 @@ class OrderServiceImplTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        int res = orderServer.insertRentOrder(order);
-        System.out.println(res);
+//        int res = orderServer.insertRentOrder(order);
+//        System.out.println(res);
     }
 
     @Test

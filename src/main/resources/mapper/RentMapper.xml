@@ -3,68 +3,86 @@
 <mapper namespace="com.secshow.demo.mapper.RentMapper">
   <resultMap id="BaseResultMap" type="com.secshow.demo.model.Rent">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="renter_id" jdbcType="INTEGER" property="renterId" />
     <result column="pro_id" jdbcType="INTEGER" property="proId" />
-    <result column="price" jdbcType="DECIMAL" property="price" />
-    <result column="deposit" jdbcType="DECIMAL" property="deposit" />
-    <result column="rent_days" jdbcType="INTEGER" property="rentDays" />
-    <result column="rent_total_price" jdbcType="DECIMAL" property="rentTotalPrice" />
+    <result column="unitprice" jdbcType="DECIMAL" property="unitprice" />
+    <result column="stuffprice" jdbcType="DECIMAL" property="stuffprice" />
     <result column="freight" jdbcType="DECIMAL" property="freight" />
+    <result column="deposit" jdbcType="DECIMAL" property="deposit" />
+    <result column="totalprice" jdbcType="DECIMAL" property="totalprice" />
+    <result column="rent_days" jdbcType="INTEGER" property="rentDays" />
     <result column="rent_start_time" jdbcType="TIMESTAMP" property="rentStartTime" />
     <result column="rent_end_time" jdbcType="TIMESTAMP" property="rentEndTime" />
+    <result column="statu" jdbcType="INTEGER" property="statu" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_by" jdbcType="INTEGER" property="createBy" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="update_by" jdbcType="INTEGER" property="updateBy" />
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="postmethod" jdbcType="VARCHAR" property="postmethod" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="buyer_user_id" jdbcType="INTEGER" property="buyerUserId" />
+    <result column="provider_user_id" jdbcType="INTEGER" property="providerUserId" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from rent
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.secshow.demo.model.Rent">
-    insert into rent (id, user_id, renter_id, 
-      pro_id, price, deposit, 
-      rent_days, rent_total_price, freight, 
-      rent_start_time, rent_end_time, create_time, 
-      create_by, update_time, update_by)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{renterId,jdbcType=INTEGER}, 
-      #{proId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{deposit,jdbcType=DECIMAL}, 
-      #{rentDays,jdbcType=INTEGER}, #{rentTotalPrice,jdbcType=DECIMAL}, #{freight,jdbcType=DECIMAL}, 
-      #{rentStartTime,jdbcType=TIMESTAMP}, #{rentEndTime,jdbcType=TIMESTAMP},CURRENT_TIME,
-      #{createBy,jdbcType=INTEGER}, CURRENT_TIME , #{updateBy,jdbcType=INTEGER})
+    insert into rent (id, pro_id, unitprice, 
+      stuffprice, freight, deposit, 
+      totalprice, rent_days, rent_start_time, 
+      rent_end_time, statu, create_time, 
+      create_by, update_time, update_by, 
+      name, address,
+      phone, postmethod, order_time, 
+      buyer_user_id, provider_user_id)
+    values (#{id,jdbcType=INTEGER}, #{proId,jdbcType=INTEGER}, #{unitprice,jdbcType=DECIMAL}, 
+      #{stuffprice,jdbcType=DECIMAL}, #{freight,jdbcType=DECIMAL}, #{deposit,jdbcType=DECIMAL}, 
+      #{totalprice,jdbcType=DECIMAL}, #{rentDays,jdbcType=INTEGER}, #{rentStartTime,jdbcType=TIMESTAMP}, 
+      #{rentEndTime,jdbcType=TIMESTAMP}, #{statu,jdbcType=INTEGER}, CURRENT_TIME ,
+      #{createBy,jdbcType=INTEGER}, CURRENT_TIME , #{updateBy,jdbcType=INTEGER},
+      #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{phone,jdbcType=VARCHAR}, #{postmethod,jdbcType=VARCHAR}, CURRENT_TIME,
+      #{buyerUserId,jdbcType=INTEGER}, #{providerUserId,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.secshow.demo.model.Rent">
     update rent
-    set user_id = #{userId,jdbcType=INTEGER},
-      renter_id = #{renterId,jdbcType=INTEGER},
-      pro_id = #{proId,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL},
-      deposit = #{deposit,jdbcType=DECIMAL},
-      rent_days = #{rentDays,jdbcType=INTEGER},
-      rent_total_price = #{rentTotalPrice,jdbcType=DECIMAL},
+    set pro_id = #{proId,jdbcType=INTEGER},
+      unitprice = #{unitprice,jdbcType=DECIMAL},
+      stuffprice = #{stuffprice,jdbcType=DECIMAL},
       freight = #{freight,jdbcType=DECIMAL},
+      deposit = #{deposit,jdbcType=DECIMAL},
+      totalprice = #{totalprice,jdbcType=DECIMAL},
+      rent_days = #{rentDays,jdbcType=INTEGER},
       rent_start_time = #{rentStartTime,jdbcType=TIMESTAMP},
       rent_end_time = #{rentEndTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=INTEGER},
-      update_time = CURRENT_TIME,
+      statu = #{statu,jdbcType=INTEGER},
+      update_time = CURRENT_TIME ,
       update_by = #{updateBy,jdbcType=INTEGER},
-      is_deleted = #{isDeleted,jdbcType=INTEGER}
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      postmethod = #{postmethod,jdbcType=VARCHAR},
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      buyer_user_id = #{buyerUserId,jdbcType=INTEGER},
+      provider_user_id = #{providerUserId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, user_id, renter_id, pro_id, price, deposit, rent_days, rent_total_price, 
-    freight, rent_start_time, rent_end_time, create_time, create_by, update_time, update_by, 
-    is_deleted
+    select id, pro_id, unitprice, stuffprice, freight, deposit, totalprice, rent_days, 
+    rent_start_time, rent_end_time, statu, create_time, create_by, update_time, update_by, 
+    is_deleted, name, address, phone, postmethod, order_time, buyer_user_id, provider_user_id
     from rent
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, renter_id, pro_id, price, deposit, rent_days, rent_total_price, 
-    freight, rent_start_time, rent_end_time, create_time, create_by, update_time, update_by, 
-    is_deleted
+    select id, pro_id, unitprice, stuffprice, freight, deposit, totalprice, rent_days, 
+    rent_start_time, rent_end_time, statu, create_time, create_by, update_time, update_by, 
+    is_deleted, name, address, phone, postmethod, order_time, buyer_user_id, provider_user_id
     from rent
   </select>
 </mapper>
