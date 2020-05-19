@@ -2,6 +2,7 @@ package com.secshow.demo.service.impl;
 
 import com.secshow.demo.mapper.UserMapper;
 import com.secshow.demo.model.User;
+import com.secshow.demo.model.VO.UserQueryVO;
 import com.secshow.demo.model.VO.UserVO;
 import com.secshow.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers(){
         return userMapper.selectAll();
+    }
+
+    @Override
+    public Integer updateUser(User user) {
+        return userMapper.updateByPrimaryKey(user);
+    }
+
+    @Override
+    public Integer delUser(Integer userId) {
+        return userMapper.deleteByPrimaryKey(userId);
+    }
+
+    @Override
+    public Integer activeUser(Integer userId) {
+        return userMapper.activeByPrimaryKey(userId);
+    }
+
+    @Override
+    public List<User> queryVOUser(UserQueryVO userQueryVO) {
+        return userMapper.selectUserByPhoneOrName(userQueryVO);
     }
 }

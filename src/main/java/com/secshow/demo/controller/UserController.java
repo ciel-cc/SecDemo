@@ -1,14 +1,12 @@
 package com.secshow.demo.controller;
 
 import com.secshow.demo.model.User;
+import com.secshow.demo.model.VO.UserQueryVO;
 import com.secshow.demo.model.VO.UserVO;
 import com.secshow.demo.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -45,5 +43,34 @@ public class UserController {
     @RequestMapping("allUser")
     public List<User> allUser(){
         return userService.getAllUsers();
+    }
+
+    @RequestMapping("updateUser")
+    public String updateUser(@RequestBody User user){
+        int res = userService.updateUser(user);
+        if (res == 1)
+            return "success";
+        return "false";
+    }
+
+    @RequestMapping("delUser/{userId}")
+    public String updateUser(@PathVariable Integer userId){
+        int res = userService.delUser(userId);
+        if (res == 1)
+            return "success";
+        return "false";
+    }
+
+    @RequestMapping("activeUser/{userId}")
+    public String activeUser(@PathVariable Integer userId){
+        int res = userService.activeUser(userId);
+        if (res == 1)
+            return "success";
+        return "false";
+    }
+
+    @RequestMapping("queryPro")
+    public List<User> queryPro(@RequestBody UserQueryVO userQueryVO){
+        return userService.queryVOUser(userQueryVO);
     }
 }

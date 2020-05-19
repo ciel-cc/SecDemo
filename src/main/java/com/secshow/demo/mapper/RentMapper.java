@@ -17,4 +17,10 @@ public interface RentMapper {
     List<Rent> selectAll();
 
     int updateByPrimaryKey(Rent record);
+
+    List<Rent> selectRentOut(Integer id);
+
+    List<Rent> selectRentIn(Integer id);
+
+    int updateStatu(Integer rentId, Integer statu);
 }

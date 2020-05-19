@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class Rent {
@@ -52,5 +53,17 @@ public class Rent {
     private Integer buyerUserId;
 
     private Integer providerUserId;
+
+    private Product product;
+
+    private User buyerUser;
+
+    private User providerUser;
+
+    private List<Proimg> proimgs;
+
+    private String proName;
+
+    private String proDetail;
 
 }

@@ -7,6 +7,7 @@ import com.secshow.demo.mapper.ProductMapper;
 import com.secshow.demo.model.Order;
 import com.secshow.demo.model.Product;
 import com.secshow.demo.model.Proimg;
+import com.secshow.demo.model.VO.ProQueryVO;
 import com.secshow.demo.service.ImageService;
 import com.secshow.demo.service.ProductService;
 import com.secshow.demo.util.Define;
@@ -215,5 +216,20 @@ public class ProductServiceImpl implements ProductService {
         product.setUpdateBy(product.getBuyerUserId());
         int prores = productMapper.updateByPrimaryKey(product);
         return prores;
+    }
+
+    @Override
+    public Integer updatePro(Product product) {
+        return productMapper.updateByPrimaryKey(product);
+    }
+
+    @Override
+    public Integer deletePro(Integer proId) {
+        return productMapper.deleteByPrimaryKey(proId);
+    }
+
+    @Override
+    public List<Product> queryProByCateOrLke(ProQueryVO proQueryVO) {
+        return productMapper.selectProByCateOrLke(proQueryVO);
     }
 }

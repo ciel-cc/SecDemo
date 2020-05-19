@@ -2,6 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.secshow.demo.mapper.MyOrderMapper">
   <resultMap id="BaseResultMap" type="com.secshow.demo.model.MyOrder">
+  <id column="id" jdbcType="INTEGER" property="id" />
+  <result column="unitprice" jdbcType="DECIMAL" property="unitprice" />
+  <result column="stuffprice" jdbcType="DECIMAL" property="stuffprice" />
+  <result column="freight" jdbcType="DECIMAL" property="freight" />
+  <result column="deposit" jdbcType="DECIMAL" property="freight" />
+  <result column="totalprice" jdbcType="DECIMAL" property="totalprice" />
+  <result column="statu" jdbcType="VARCHAR" property="statu" />
+  <result column="type" jdbcType="INTEGER" property="type" />
+  <result column="name" jdbcType="VARCHAR" property="name" />
+  <result column="address" jdbcType="VARCHAR" property="address" />
+  <result column="phone" jdbcType="VARCHAR" property="phone" />
+  <result column="postmethod" jdbcType="VARCHAR" property="postmethod" />
+  <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+  <result column="buyer_user_id" jdbcType="INTEGER" property="buyerUserId" />
+  <result column="provider_user_id" jdbcType="INTEGER" property="providerUserId" />
+  <result column="pro_id" jdbcType="INTEGER" property="proId" />
+  <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  <result column="create_by" jdbcType="INTEGER" property="createBy" />
+  <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+  <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  <result column="rent_start_time" jdbcType="TIMESTAMP" property="rentStartTime" />
+  <result column="rent_end_time" jdbcType="TIMESTAMP" property="rentEndTime" />
+</resultMap>
+  <resultMap id="ResultMapWithPro" type="com.secshow.demo.model.MyOrder">
+  <id column="id" jdbcType="INTEGER" property="id" />
+  <result column="unitprice" jdbcType="DECIMAL" property="unitprice" />
+  <result column="stuffprice" jdbcType="DECIMAL" property="stuffprice" />
+  <result column="freight" jdbcType="DECIMAL" property="freight" />
+  <result column="deposit" jdbcType="DECIMAL" property="freight" />
+  <result column="totalprice" jdbcType="DECIMAL" property="totalprice" />
+  <result column="statu" jdbcType="VARCHAR" property="statu" />
+  <result column="type" jdbcType="INTEGER" property="type" />
+  <result column="name" jdbcType="VARCHAR" property="name" />
+  <result column="address" jdbcType="VARCHAR" property="address" />
+  <result column="phone" jdbcType="VARCHAR" property="phone" />
+  <result column="postmethod" jdbcType="VARCHAR" property="postmethod" />
+  <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+  <result column="buyer_user_id" jdbcType="INTEGER" property="buyerUserId" />
+  <result column="provider_user_id" jdbcType="INTEGER" property="providerUserId" />
+  <result column="pro_id" jdbcType="INTEGER" property="proId" />
+  <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  <result column="create_by" jdbcType="INTEGER" property="createBy" />
+  <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+  <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  <result column="rent_start_time" jdbcType="TIMESTAMP" property="rentStartTime" />
+  <result column="rent_end_time" jdbcType="TIMESTAMP" property="rentEndTime" />
+  <association property="product" javaType="com.secshow.demo.model.Product">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="deposit" jdbcType="DECIMAL" property="deposit" />
+    <result column="rent_price" jdbcType="DECIMAL" property="rentPrice" />
+    <result column="freight" jdbcType="DECIMAL" property="freight" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="cate_id" jdbcType="INTEGER" property="cateId" />
+    <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
+    <result column="owner_phone" jdbcType="VARCHAR" property="ownerPhone" />
+    <result column="owner_address" jdbcType="VARCHAR" property="ownerAddress" />
+  </association>
+</resultMap>
+  <resultMap id="ResultMapWithProImg" type="com.secshow.demo.model.MyOrder">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="unitprice" jdbcType="DECIMAL" property="unitprice" />
     <result column="stuffprice" jdbcType="DECIMAL" property="stuffprice" />
@@ -25,6 +88,14 @@
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
     <result column="rent_start_time" jdbcType="TIMESTAMP" property="rentStartTime" />
     <result column="rent_end_time" jdbcType="TIMESTAMP" property="rentEndTime" />
+    <result column="pname" jdbcType="VARCHAR" property="proName" />
+    <result column="detail" jdbcType="VARCHAR" property="proDetail" />
+    <collection property="proimgs" ofType="com.secshow.demo.model.Proimg" column="pro_id">
+      <id column="pid" jdbcType="INTEGER" property="id" />
+      <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+      <result column="user_id" jdbcType="INTEGER" property="userId" />
+      <result column="pro_id" jdbcType="INTEGER" property="proId" />
+    </collection>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from myorder
@@ -81,10 +152,39 @@
     from myorder
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, unitprice, stuffprice, freight, deposit, totalprice, statu, type, name, address,
-    phone, postmethod, order_time, buyer_user_id, provider_user_id, pro_id, create_time, 
-    create_by, update_time, update_by, is_deleted, rent_start_time, rent_end_time
-    from myorder
+  <select id="selectAll" resultMap="ResultMapWithPro">
+    select m.id, unitprice, stuffprice, m.freight, m.deposit, totalprice, m.statu, m.type, m.name, address,
+    phone, postmethod, order_time, m.buyer_user_id, m.provider_user_id, pro_id, m.create_time,
+    m.create_by, m.update_time, m.update_by, m.is_deleted, rent_start_time, rent_end_time,
+    p.id, p.name, p.price, p.deposit, p.rent_price, p.freight, p.detail, p.cate_id,
+    p.owner_name, p.owner_phone, p.owner_address
+    from myorder m join product p on m.pro_id = p.id
   </select>
+  <select id="selectOrderOut" parameterType="java.lang.Integer" resultMap="ResultMapWithProImg">
+    select m.id, unitprice, stuffprice, m.freight, m.deposit, totalprice, m.statu, m.type, m.name, address,
+    phone, postmethod, order_time, m.buyer_user_id, m.provider_user_id, m.pro_id, m.create_time,
+	p.name pname, p.detail,
+    m.create_by, m.update_time, m.update_by, m.is_deleted, rent_start_time, rent_end_time,
+    pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from myorder m
+	JOIN product p on m.pro_Id = p.id
+	left join proimg pi on m.pro_id = pi.pro_id
+    where m.provider_user_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectOrderIn" parameterType="java.lang.Integer" resultMap="ResultMapWithProImg">
+    select m.id, unitprice, stuffprice, m.freight, m.deposit, totalprice, m.statu, m.type, m.name, address,
+    phone, postmethod, order_time, m.buyer_user_id, m.provider_user_id, m.pro_id, m.create_time,
+    p.name pname, p.detail,
+    m.create_by, m.update_time, m.update_by, m.is_deleted, rent_start_time, rent_end_time,
+    pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from myorder m
+    JOIN product p on m.pro_Id = p.id
+    left join proimg pi on m.pro_id = pi.pro_id
+    where m.buyer_user_id = #{id,jdbcType=INTEGER}
+  </select>
+  <update id="updateStatu" parameterType="com.secshow.demo.model.MyOrder">
+    update myorder
+    set statu = #{statu,jdbcType=VARCHAR}
+    where id = #{orderId,jdbcType=INTEGER}
+  </update>
 </mapper>

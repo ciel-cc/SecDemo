@@ -1,6 +1,7 @@
 package com.secshow.demo.mapper;
 
 import com.secshow.demo.model.Product;
+import com.secshow.demo.model.VO.ProQueryVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,4 +33,7 @@ public interface ProductMapper {
     List<Product> selectByBuyerTypeIn(int userId, int type);
 
     int updateByPrimaryKey(Product record);
+
+    /** Admin */
+    List<Product> selectProByCateOrLke(ProQueryVO proQueryVO);
 }

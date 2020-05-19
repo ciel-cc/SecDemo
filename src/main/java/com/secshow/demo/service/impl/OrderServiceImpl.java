@@ -10,6 +10,7 @@ import com.secshow.demo.model.Rent;
 import com.secshow.demo.model.VO.RentVO;
 import com.secshow.demo.service.OrderServer;
 import com.secshow.demo.service.ProductService;
+import com.secshow.demo.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,11 @@ public class OrderServiceImpl implements OrderServer {
     @Override
     public List<MyOrder> getAllOrder() {
         return orderMapper.selectAll();
+    }
+
+    @Override
+    public List<Rent> getAllRent() {
+        return rentMapper.selectAll();
     }
 
     @Override
@@ -94,5 +100,46 @@ public class OrderServiceImpl implements OrderServer {
         rent.setUpdateBy(rentVO.getBuyerUserId());
         rent.setCreateBy(rentVO.getBuyerUserId());
         return rent;
+    }
+
+    @Override
+    public List<MyOrder> getOrderByUserOut(Integer userId) {
+        List<MyOrder> list = orderMapper.selectOrderOut(userId);
+        list.forEach( myOrder ->  myOrder.getProimgs().forEach(proimg ->
+                proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+        return list;
+    }
+
+    @Override
+    public List<MyOrder> getOrderByUserIn(Integer userId) {
+        List<MyOrder> list = orderMapper.selectOrderIn(userId);
+        list.forEach( myOrder ->  myOrder.getProimgs().forEach(proimg ->
+                proimg.setImgUrl(FileUtil.IMGURL + proimg.getImgUrl())));
+        return list;
+    }
+
+    /** 确认订单 -->statu: 0->1*/
+    @Override
+    public int ensureOrder(Integer orderId) {
+        return orderMapper.updateStatu(orderId, "1");
+    }
+
+    /** 拒绝订单 -->statu: 0->4 */
+    @Override
+    public int refuseOrder(Integer orderId) {
+        return orderMapper.updateStatu(orderId, "4");
+    }
+
+    /** 确认交易 -->statu: 1->2 */
+    @Override
+    public int ensureSale(Integer orderId) {
+        return orderMapper.updateStatu(orderId, "2");
+    }
+
+    /** 确认收货 -->statu: 2->3
+     *  statu: 3完成交易*/
+    @Override
+    public int ensureStuff(Integer orderId) {
+        return orderMapper.updateStatu(orderId, "3");
     }
 }

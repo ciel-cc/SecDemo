@@ -26,6 +26,77 @@
     <result column="buyer_user_id" jdbcType="INTEGER" property="buyerUserId" />
     <result column="provider_user_id" jdbcType="INTEGER" property="providerUserId" />
   </resultMap>
+  <resultMap id="ResultMapWithPro" type="com.secshow.demo.model.Rent">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pro_id" jdbcType="INTEGER" property="proId" />
+    <result column="unitprice" jdbcType="DECIMAL" property="unitprice" />
+    <result column="stuffprice" jdbcType="DECIMAL" property="stuffprice" />
+    <result column="freight" jdbcType="DECIMAL" property="freight" />
+    <result column="deposit" jdbcType="DECIMAL" property="deposit" />
+    <result column="totalprice" jdbcType="DECIMAL" property="totalprice" />
+    <result column="rent_days" jdbcType="INTEGER" property="rentDays" />
+    <result column="rent_start_time" jdbcType="TIMESTAMP" property="rentStartTime" />
+    <result column="rent_end_time" jdbcType="TIMESTAMP" property="rentEndTime" />
+    <result column="statu" jdbcType="INTEGER" property="statu" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="postmethod" jdbcType="VARCHAR" property="postmethod" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="buyer_user_id" jdbcType="INTEGER" property="buyerUserId" />
+    <result column="provider_user_id" jdbcType="INTEGER" property="providerUserId" />
+    <association property="product" javaType="com.secshow.demo.model.Product">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="price" jdbcType="DECIMAL" property="price" />
+      <result column="deposit" jdbcType="DECIMAL" property="deposit" />
+      <result column="rent_price" jdbcType="DECIMAL" property="rentPrice" />
+      <result column="freight" jdbcType="DECIMAL" property="freight" />
+      <result column="detail" jdbcType="VARCHAR" property="detail" />
+      <result column="cate_id" jdbcType="INTEGER" property="cateId" />
+      <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
+      <result column="owner_phone" jdbcType="VARCHAR" property="ownerPhone" />
+      <result column="owner_address" jdbcType="VARCHAR" property="ownerAddress" />
+    </association>
+  </resultMap>
+  <resultMap id="ResultMapWithProImg" type="com.secshow.demo.model.Rent">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pro_id" jdbcType="INTEGER" property="proId" />
+    <result column="unitprice" jdbcType="DECIMAL" property="unitprice" />
+    <result column="stuffprice" jdbcType="DECIMAL" property="stuffprice" />
+    <result column="freight" jdbcType="DECIMAL" property="freight" />
+    <result column="deposit" jdbcType="DECIMAL" property="deposit" />
+    <result column="totalprice" jdbcType="DECIMAL" property="totalprice" />
+    <result column="rent_days" jdbcType="INTEGER" property="rentDays" />
+    <result column="rent_start_time" jdbcType="TIMESTAMP" property="rentStartTime" />
+    <result column="rent_end_time" jdbcType="TIMESTAMP" property="rentEndTime" />
+    <result column="statu" jdbcType="INTEGER" property="statu" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="postmethod" jdbcType="VARCHAR" property="postmethod" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="buyer_user_id" jdbcType="INTEGER" property="buyerUserId" />
+    <result column="provider_user_id" jdbcType="INTEGER" property="providerUserId" />
+    <result column="pname" jdbcType="VARCHAR" property="proName" />
+    <result column="detail" jdbcType="VARCHAR" property="proDetail" />
+    <collection property="proimgs" ofType="com.secshow.demo.model.Proimg" column="pro_id">
+      <id column="pid" jdbcType="INTEGER" property="id" />
+      <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+      <result column="user_id" jdbcType="INTEGER" property="userId" />
+      <result column="pro_id" jdbcType="INTEGER" property="proId" />
+    </collection>
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from rent
     where id = #{id,jdbcType=INTEGER}
@@ -79,10 +150,40 @@
     from rent
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, pro_id, unitprice, stuffprice, freight, deposit, totalprice, rent_days, 
-    rent_start_time, rent_end_time, statu, create_time, create_by, update_time, update_by, 
-    is_deleted, name, address, phone, postmethod, order_time, buyer_user_id, provider_user_id
-    from rent
+  <select id="selectAll" resultMap="ResultMapWithPro">
+    select r.id, pro_id, unitprice, stuffprice, r.freight, r.deposit, r.totalprice, rent_days,
+    rent_start_time, rent_end_time, r.statu, r.create_time, r.create_by, r.update_time, r.update_by,
+    r.is_deleted, r.name, r.address, r.phone, r.postmethod, order_time, r.buyer_user_id, r.provider_user_id,
+    p.id, p.name, p.price, p.deposit, p.rent_price, p.freight, p.detail, p.cate_id,
+    p.owner_name, p.owner_phone, p.owner_address
+    from rent r join product p on r.pro_id = p.id
   </select>
+  <select id="selectRentOut" parameterType="java.lang.Integer" resultMap="ResultMapWithProImg">
+    select r.id, r.pro_id, unitprice, stuffprice, r.freight, r.deposit, r.totalprice, rent_days,
+    rent_start_time, rent_end_time, r.statu, r.create_time, r.create_by, r.update_time, r.update_by,
+    r.is_deleted, r.name, r.address, r.phone, r.postmethod, order_time, r.buyer_user_id, r.provider_user_id,
+    p.name pname, p.detail,
+    pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from rent r
+    JOIN product p on r.pro_Id = p.id
+    left join proimg pi on r.pro_id = pi.pro_id
+    where r.provider_user_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectRentIn" parameterType="java.lang.Integer" resultMap="ResultMapWithProImg">
+    select r.id, r.pro_id, unitprice, stuffprice, r.freight, r.deposit, r.totalprice, rent_days,
+    rent_start_time, rent_end_time, r.statu, r.create_time, r.create_by, r.update_time, r.update_by,
+    r.is_deleted, r.name, r.address, r.phone, r.postmethod, order_time, r.buyer_user_id, r.provider_user_id,
+    p.name pname, p.detail,
+    pi.id pid, pi.img_url, pi.user_id, pi.pro_id
+    from rent r
+    JOIN product p on r.pro_Id = p.id
+    left join proimg pi on r.pro_id = pi.pro_id
+    where r.buyer_user_id = #{id,jdbcType=INTEGER}
+  </select>
+  <update id="updateStatu" parameterType="com.secshow.demo.model.Rent">
+    update rent
+    set statu = #{statu,jdbcType=INTEGER},
+      update_time = CURRENT_TIME
+    where id = #{rentId,jdbcType=INTEGER}
+  </update>
 </mapper>

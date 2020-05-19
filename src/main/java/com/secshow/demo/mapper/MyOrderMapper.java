@@ -17,4 +17,10 @@ public interface MyOrderMapper {
     List<MyOrder> selectAll();
 
     int updateByPrimaryKey(MyOrder record);
+
+    List<MyOrder> selectOrderOut(Integer id);
+
+    List<MyOrder> selectOrderIn(Integer id);
+
+    int updateStatu(Integer orderId, String statu);
 }

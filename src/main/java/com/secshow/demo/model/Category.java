@@ -10,11 +10,15 @@ public class Category {
 
     private String name;
 
+    private String detail;
+
+    private Date createTime;
+
     private Date updateTime;
 
     private String createBy;
 
-    private Date updateBy;
+    private String updateBy;
 
     private Integer isDeleted;
 

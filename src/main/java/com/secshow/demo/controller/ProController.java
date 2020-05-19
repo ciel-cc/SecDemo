@@ -2,6 +2,7 @@ package com.secshow.demo.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.secshow.demo.model.Product;
+import com.secshow.demo.model.VO.ProQueryVO;
 import com.secshow.demo.service.ProductService;
 import com.secshow.demo.util.FileNameUtil;
 import com.secshow.demo.util.FileUtil;
@@ -163,4 +164,37 @@ public class ProController {
         return "error";*//*
     }*/
     /** 租赁物品 */
+
+
+
+
+
+
+
+
+    /************************ Admin *****************************/
+    /**
+     * Admin
+     */
+    @RequestMapping("updatePro")
+    public String updatePro(@RequestBody Product product){
+        int res = productService.updatePro(product);
+        if (res == 1)
+            return "success";
+        return "false";
+    }
+
+    @RequestMapping("delPro/{proId}")
+    public String deletePro(@PathVariable Integer proId){
+        int res = productService.deletePro(proId);
+        if (res == 1)
+            return "success";
+        return "false";
+    }
+
+    @RequestMapping("queryPro")
+    public List<Product> queryPro(@RequestBody ProQueryVO proQueryVO){
+        List<Product> list = productService.queryProByCateOrLke(proQueryVO);
+        return list;
+    }
 }

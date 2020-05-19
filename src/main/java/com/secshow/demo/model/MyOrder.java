@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class MyOrder {
@@ -29,6 +30,7 @@ public class MyOrder {
 
     private String phone;
 
+    /** 0线下交易，1邮寄 */
     private String postmethod;
 
     private Date orderTime;
@@ -52,4 +54,16 @@ public class MyOrder {
     private Date rentStartTime;
 
     private Date rentEndTime;
+
+    private Product product;
+
+    private User buyerUser;
+
+    private User providerUser;
+
+    private List<Proimg> proimgs;
+
+    private String proName;
+
+    private String proDetail;
 }

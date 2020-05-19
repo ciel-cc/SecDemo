@@ -18,4 +18,19 @@ public class CategoryImpl implements CategoryService {
     public List<Category> allCategory() {
         return categoryMapper.selectAll();
     }
+
+    @Override
+    public Integer addCategory(Category category) {
+        return categoryMapper.insert(category);
+    }
+
+    @Override
+    public Integer updateCategory(Category category) {
+        return categoryMapper.updateByPrimaryKey(category);
+    }
+
+    @Override
+    public Integer deleteCategory(Integer cateId) {
+        return categoryMapper.deleteByPrimaryKey(cateId);
+    }
 }

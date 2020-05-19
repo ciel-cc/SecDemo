@@ -2,6 +2,7 @@ package com.secshow.demo.service;
 
 import com.github.pagehelper.PageInfo;
 import com.secshow.demo.model.Product;
+import com.secshow.demo.model.VO.ProQueryVO;
 
 import java.util.List;
 
@@ -48,5 +49,12 @@ public interface ProductService {
     Product buyPro(int productId, int buyerUserId);
 
     int rentPro(int productId, int buyerUserId);
+
+    /** Admin物品 */
+    Integer updatePro(Product product);
+
+    Integer deletePro(Integer proId);
+
+    List<Product> queryProByCateOrLke(ProQueryVO proQueryVO);
 
 }

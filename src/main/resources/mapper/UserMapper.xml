@@ -17,7 +17,13 @@
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
+    update user
+    set is_deleted = 1
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="activeByPrimaryKey" parameterType="java.lang.Integer">
+    update user
+    set is_deleted = 0
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.secshow.demo.model.User"  keyProperty="id" useGeneratedKeys="true">
@@ -33,17 +39,12 @@
   <update id="updateByPrimaryKey" parameterType="com.secshow.demo.model.User">
     update user
     set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=INTEGER},
       email = #{email,jdbcType=VARCHAR},
       phone_number = #{phoneNumber,jdbcType=VARCHAR},
-      number = #{number,jdbcType=VARCHAR},
       type = #{type,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=INTEGER},
-      is_deleted = #{isDeleted,jdbcType=INTEGER}
+      update_time = CURRENT_TIME ,
+      update_by = #{updateBy,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -68,5 +69,20 @@
     select id, username, password, sex, email, phone_number, number, type, create_time, 
     create_by, update_time, update_by, is_deleted
     from user
+  </select>
+  <!--  admin-->
+  <select id="selectUserByPhoneOrName" parameterType="com.secshow.demo.model.VO.UserQueryVO" resultMap="BaseResultMap">
+    select id, username, password, sex, email, phone_number, number, type, create_time,
+    create_by, update_time, update_by, is_deleted
+    from user
+    <where>
+      <if test="phone != null and phone != ''">
+        phone_number = #{phone}
+      </if>
+      <if test="name != null and name != ''">
+        AND username like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
+      </if>
+    </where>
+
   </select>
 </mapper>

@@ -32,8 +32,34 @@
       <result column="pro_id" jdbcType="INTEGER" property="proId" />
     </collection>
   </resultMap>
+  <resultMap id="ResultMapOnlyPro" type="com.secshow.demo.model.Product">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="deposit" jdbcType="DECIMAL" property="deposit" />
+    <result column="rent_price" jdbcType="DECIMAL" property="rentPrice" />
+    <result column="freight" jdbcType="DECIMAL" property="freight" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="cate_id" jdbcType="INTEGER" property="cateId" />
+    <result column="provider_user_id" jdbcType="INTEGER" property="providerUserId" />
+    <result column="buyer_user_id" jdbcType="INTEGER" property="buyerUserId" />
+    <result column="statu" jdbcType="INTEGER" property="statu" />
+    <result column="rent_or_sail" jdbcType="TINYINT" property="rentOrSail" />
+    <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
+    <result column="owner_phone" jdbcType="VARCHAR" property="ownerPhone" />
+    <result column="owner_address" jdbcType="VARCHAR" property="ownerAddress" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from product
+    update product
+    set is_deleted = 1
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.secshow.demo.model.Product" keyProperty="id">
@@ -56,7 +82,6 @@
   <update id="updateByPrimaryKey" parameterType="com.secshow.demo.model.Product">
     update product
     set name = #{name,jdbcType=VARCHAR},
-      amount = #{amount,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       deposit = #{deposit,jdbcType=DECIMAL},
       rent_price = #{rentPrice,jdbcType=DECIMAL},
@@ -66,17 +91,16 @@
       provider_user_id = #{providerUserId,jdbcType=INTEGER},
       buyer_user_id = #{buyerUserId,jdbcType=INTEGER},
       statu = #{statu,jdbcType=VARCHAR},
-      rent_or_sail = #{rentOrSail,jdbcType=TINYINT},
-      release_time = #{releaseTime,jdbcType=TIMESTAMP},
       update_time = CURRENT_TIMESTAMP,
-      update_by = #{updateBy,jdbcType=INTEGER},
-      is_deleted = #{isDeleted,jdbcType=INTEGER},
-      img = #{img,jdbcType=VARCHAR},
-      owner_name = #{ownerName,jdbcType=VARCHAR},
-      owner_phone = #{ownerPhone,jdbcType=VARCHAR},
-      owner_address = #{ownerAddress,jdbcType=VARCHAR}
+      update_by = #{updateBy,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+<!--rent_or_sail = #{rentOrSail,jdbcType=TINYINT},
+release_time = #{releaseTime,jdbcType=TIMESTAMP},
+img = #{img,jdbcType=VARCHAR},
+owner_name = #{ownerName,jdbcType=VARCHAR},
+owner_phone = #{ownerPhone,jdbcType=VARCHAR},
+owner_address = #{ownerAddress,jdbcType=VARCHAR}-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select p.id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
     statu, rent_or_sail, release_time, p.create_time, p.create_by, p.update_time, p.update_by,
@@ -146,5 +170,20 @@
     p.is_deleted, img, owner_name, owner_phone, owner_address, pi.id pid, pi.img_url, pi.user_id, pi.pro_id
     from product p left join proimg pi on p.id = pi.pro_id
     where buyer_user_id = #{userId,jdbcType=INTEGER} and statu = #{type,jdbcType=INTEGER}
+  </select>
+
+<!--  admin-->
+  <select id="selectProByCateOrLke" parameterType="com.secshow.demo.model.VO.ProQueryVO" resultMap="ResultMapOnlyPro">
+    select id, name, amount, price, deposit, rent_price, freight, detail, cate_id, provider_user_id, buyer_user_id,
+    statu, rent_or_sail, release_time, create_time, create_by, update_time, update_by,
+    is_deleted, img, owner_name, owner_phone, owner_address
+    from product
+    where is_deleted = 0
+    <if test="cateId != null and cateId != ''">
+      AND cate_id = #{cateId}
+    </if>
+    <if test="name != null and name != ''">
+      AND name like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
+    </if>
   </select>
 </mapper>
